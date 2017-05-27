@@ -80,8 +80,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\img\city.jpg" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
+    <Content Include="assets\css\bootstrap.min.css" />
+    <Content Include="assets\css\demo.css" />
+    <Content Include="assets\css\material-dashboard.css" />
+    <Content Include="assets\img\apple-icon.png" />
+    <Content Include="assets\img\cover.jpeg" />
+    <Content Include="assets\img\faces\marc.jpg" />
+    <Content Include="assets\img\favicon.png" />
+    <Content Include="assets\img\mask.png" />
+    <Content Include="assets\img\new_logo.png" />
+    <Content Include="assets\img\sidebar-1.jpg" />
+    <Content Include="assets\img\sidebar-2.jpg" />
+    <Content Include="assets\img\sidebar-3.jpg" />
+    <Content Include="assets\img\sidebar-4.jpg" />
+    <Content Include="assets\img\tim_80x80.png" />
+    <Content Include="assets\js\bootstrap-notify.js" />
+    <Content Include="assets\js\bootstrap.min.js" />
+    <Content Include="assets\js\chartist.min.js" />
+    <Content Include="assets\js\demo.js" />
+    <Content Include="assets\js\jquery-3.1.0.min.js" />
+    <Content Include="assets\js\material-dashboard.js" />
+    <Content Include="assets\js\material.min.js" />
+    <Content Include="Web\index.html" />
+    <Content Include="Web\Login.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -100,6 +124,46 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="assets\.DS_Store" />
+    <Content Include="assets\css\.DS_Store" />
+    <Content Include="assets\img\.DS_Store" />
+    <Content Include="assets\img\faces\.DS_Store" />
+    <Content Include="assets\js\.DS_Store" />
+    <Content Include="assets\sass\.DS_Store" />
+    <Content Include="assets\sass\material-dashboard.scss" />
+    <Content Include="assets\sass\md\.DS_Store" />
+    <Content Include="assets\sass\md\mixins\_chartist.scss" />
+    <Content Include="assets\sass\md\mixins\_transparency.scss" />
+    <Content Include="assets\sass\md\mixins\_vendor-prefixes.scss" />
+    <Content Include="assets\sass\md\plugins\_animate.scss" />
+    <Content Include="assets\sass\md\plugins\_plugin-nouislider.scss" />
+    <Content Include="assets\sass\md\_alerts.scss" />
+    <Content Include="assets\sass\md\_buttons.scss" />
+    <Content Include="assets\sass\md\_cards.scss" />
+    <Content Include="assets\sass\md\_chartist.scss" />
+    <Content Include="assets\sass\md\_checkboxes.scss" />
+    <Content Include="assets\sass\md\_colors.scss" />
+    <Content Include="assets\sass\md\_dialogs.scss" />
+    <Content Include="assets\sass\md\_dropdown.scss" />
+    <Content Include="assets\sass\md\_footers.scss" />
+    <Content Include="assets\sass\md\_forms.scss" />
+    <Content Include="assets\sass\md\_inputs-size.scss" />
+    <Content Include="assets\sass\md\_inputs.scss" />
+    <Content Include="assets\sass\md\_misc.scss" />
+    <Content Include="assets\sass\md\_mixins.scss" />
+    <Content Include="assets\sass\md\_navbars.scss" />
+    <Content Include="assets\sass\md\_pills.scss" />
+    <Content Include="assets\sass\md\_popups.scss" />
+    <Content Include="assets\sass\md\_radios.scss" />
+    <Content Include="assets\sass\md\_responsive.scss" />
+    <Content Include="assets\sass\md\_ripples.scss" />
+    <Content Include="assets\sass\md\_shadows.scss" />
+    <Content Include="assets\sass\md\_sidebar-and-main-panel.scss" />
+    <Content Include="assets\sass\md\_tables.scss" />
+    <Content Include="assets\sass\md\_tabs.scss" />
+    <Content Include="assets\sass\md\_togglebutton.scss" />
+    <Content Include="assets\sass\md\_typography.scss" />
+    <Content Include="assets\sass\md\_variables.scss" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
