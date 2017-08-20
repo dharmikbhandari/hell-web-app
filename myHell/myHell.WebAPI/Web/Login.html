@@ -1,5 +1,5 @@
 ﻿<!doctype html>
-<html lang="en">
+<html lang="en" ng-app="myHell">
 <head>
     <meta charset="utf-8" />
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png" />
@@ -22,11 +22,34 @@
     <link href="../assets/css/demo.css" rel="stylesheet" />
 
     <!--     Fonts and icons     -->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='//fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+
+    <script src="../assets/js/angular.min.js"></script>
+    <script src="../assets/js/angular-resource.min.js"></script>
+    <script src="../assets/js/angular-route.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "",
+            authDomain: "",
+            databaseURL: "",
+            projectId: "",
+            storageBucket: "",
+            messagingSenderId: "180143087765"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <!-- AngularFire -->
+    
+    <script src="../assets/js/myHell.js"></script>
+    
 </head>
 
-<body>
+<body  ng-controller="loginController">
 
     <div class="wrapper" style="background-image: url('../assets/img/city.jpg'); background-size: cover; background-position: top center;">
   
@@ -43,7 +66,7 @@
                                 <div class="card">
                                     <div class="card-header" data-background-color="red">
                                         <h4 class="title">Login</h4>
-                                        <p class="category">Login into your hell...</p>
+                                        <p class="category">Login into your hell... {{message}}</p>
                                     </div>
                                     <div class="card-content">
                                         <form>
@@ -53,7 +76,7 @@
                                                     <div class="col-md-10">
                                                         <div class="form-group label-floating">
                                                             <label class="control-label">Email address</label>
-                                                            <input type="email" class="form-control">
+                                                            <input type="email" ng-model="user.Email" class="form-control" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -63,7 +86,7 @@
                                                 <div class="col-md-10">
                                                     <div class="form-group label-floating">
                                                         <label class="control-label">Password</label>
-                                                        <input type="password" class="form-control">
+                                                        <input type="password" ng-model="user.Password" class="form-control" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -71,7 +94,7 @@
                                                 <div class="col-md-4">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <button class="btn btn-danger">Get into Hell</button>
+                                                    <button class="btn btn-danger" ng-click="GetIntoHell(user)">Get into Hell</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -108,14 +131,12 @@
 <!--  Notifications Plugin    -->
 <script src="../assets/js/bootstrap-notify.js"></script>
 
-<!--  Google Maps Plugin    -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
-
 <!-- Material Dashboard javascript methods -->
 <script src="../assets/js/material-dashboard.js"></script>
 
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="../assets/js/demo.js"></script>
+
 
 
 </html>

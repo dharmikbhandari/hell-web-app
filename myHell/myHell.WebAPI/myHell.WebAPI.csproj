@@ -16,13 +16,14 @@
     <AssemblyName>myHell.WebAPI</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -81,8 +82,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\img\city.jpg" />
+    <Content Include="assets\js\angular-resource.min.js" />
+    <Content Include="assets\js\angular-route.min.js" />
+    <Content Include="assets\js\angular.min.js" />
+    <Content Include="assets\js\myHell.js" />
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="assets\css\bootstrap.min.css" />
     <Content Include="assets\css\demo.css" />
     <Content Include="assets\css\material-dashboard.css" />
@@ -104,6 +111,10 @@
     <Content Include="assets\js\jquery-3.1.0.min.js" />
     <Content Include="assets\js\material-dashboard.js" />
     <Content Include="assets\js\material.min.js" />
+    <Content Include="Web\About.html" />
+    <Content Include="Web\Contact.html" />
+    <Content Include="Web\Dashboard.html" />
+    <Content Include="Web\Home.html" />
     <Content Include="Web\index.html" />
     <Content Include="Web\Login.html" />
   </ItemGroup>
@@ -117,7 +128,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

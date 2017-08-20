@@ -51,5 +51,32 @@ namespace myHell.WebAPI.Controllers
         public void Delete(int id)
         {
         }
+        [Route("api/user/getusers/{id}")]
+        public IHttpActionResult GetUsers(int id)
+        {
+            DataSet dataSet = new DataSet();
+            dataSet = _myHellServices.GetUserByName("dharmik");
+            List<UserModel> model = new List<UserModel>();
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                UserModel user = new UserModel();
+                user.Id = Convert.ToInt32(row[0].ToString());
+                user.Name = row[1].ToString();
+                user.Email = row[2].ToString();
+                user.Password = row[3].ToString();
+                user.Active = Convert.ToBoolean(row[4].ToString());
+
+                model.Add(user);
+            }
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(model);
+        }
     }
+    //[HttpPost]
+    //[Route("api/contentfile/{files}")] //{files} here tells routing to look for a parameter in the *Route* e.g api/contentfile/something
+    //public IHttpActionResult Post([FromBody] List<ContentFile> files)
 }
