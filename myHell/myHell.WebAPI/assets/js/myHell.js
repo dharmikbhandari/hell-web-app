@@ -1,6 +1,6 @@
 ﻿var myHell = angular.module('myHell', ['ngRoute']);
 
-var apiBaseURL = "http://localhost:56420/api/";
+var apiBaseURL = "https://localhost:44300/api/";
 
 // configure our routes
 myHell.config(function ($routeProvider) {
@@ -30,12 +30,30 @@ myHell.config(function ($routeProvider) {
             controller: 'contactController'
         })
 
-        // route for the contact page
+        // route for the login page
         .when('/login', {
         templateUrl: 'login.html',
         controller: 'loginController'
         })
 
+        // route for the userList page
+        .when('/userList', {
+            templateUrl: 'UserList.html',
+            controller: 'usersController'
+        })
+
+        // route for the adduser page
+        .when('/addUser', {
+            templateUrl: 'AddEditUser.html',
+            controller: 'usersController'
+        })
+
+        // route for the adduser page
+        .when('/editUser/:id', {
+            templateUrl: 'AddEditUser.html',
+            controller: 'usersController'
+        })
+        
         .otherwise({ redirectTo: '/login' });
 });
 
@@ -109,5 +127,121 @@ myHell.controller('loginController', function ($scope, $window, $http) {
             ShowNotification("Please enter Email/Password", 'danger');
         }
     };
+
+});
+
+myHell.controller('usersController', function ($scope, $window, $http,$routeParams) {
+
+
+    $scope.users = [];
+
+    $scope.message = "This is Users page";
+
+    $scope.AddUser = function () {
+        $window.location.href = '#/addUser';
+    };
+
+    $scope.BackToUserList = function () {
+        $window.location.href = '#/userList';
+    };
+
+    $scope.init = function () {
+        console.log("init called...");
+        GetAllUsers();
+        
+    };
+
+    $scope.EditUser = function () {
+        if ($routeParams.id > 0) {
+            $http({
+                method: 'GET',
+                url: apiBaseURL + 'user/getusers/' + $routeParams.id,
+            }).then(function successCallback(response) {
+
+                var user = response.data;
+                $scope.user = {};
+                $scope.user.Name = user.Name;
+                $scope.user.Email = user.Email;
+                $scope.user.Password = user.Password;
+                $scope.user.Active = user.Active;
+
+                $scope.TableTitle = "Edit User-"+user.Name;
+
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+
+                var message = response.status + " : " + response.statusText;
+                ShowNotification(message, 'danger');
+            });
+        }
+        else {
+            $scope.TableTitle = "Add New User";
+        }
+    };
+
+    $scope.Save = function (user) {
+        Save(user)
+    }
+
+    $scope.Edit = function (id) {
+        
+        
+        $window.location.href = '#/addUser';
+        var user = GetUserById(id);
+        $scope.user.Name = "ddd";
+        console.log(user);
+    }
+
+    function GetAllUsers() {
+        $http({
+            method: 'GET',
+            url: apiBaseURL + 'User',
+        }).then(function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+            $scope.users = response.data;
+            
+
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+
+            var message = response.status + " : " + response.statusText;
+            ShowNotification(message, 'danger');
+        });
+    };
+
+    function GetUserById(id) {
+       
+      
+
+      
+    }
+
+    function Save(user) {
+        if (user != null) {
+
+            $http({
+                method: 'POST',
+                url: apiBaseURL + 'user/saveuser/',
+                data: JSON.stringify(user)
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                console.log(response);
+                ShowNotification("Data Saved...!!!", 'success');
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                var message = response.status + " : " + response.statusText;
+                ShowNotification(message, 'danger');
+            });
+        }
+        else {
+            ShowNotification("Please enter Email/Password", 'danger');
+        }
+    }
+
 
 });

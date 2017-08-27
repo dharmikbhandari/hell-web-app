@@ -15,7 +15,7 @@ namespace myHell.WebAPI.Controllers
         public IEnumerable<UserModel> Get()
         {
             DataSet dataSet = new DataSet();
-            dataSet = _myHellServices.GetUserByName("dharmik");
+            dataSet = _myHellServices.GetAllUser(0,0);
             List<UserModel> model = new List<UserModel>();
             foreach(DataRow row in dataSet.Tables[0].Rows)
             {
@@ -40,6 +40,7 @@ namespace myHell.WebAPI.Controllers
         // POST: api/User
         public void Post([FromBody]string value)
         {
+           
         }
 
         // PUT: api/User/5
@@ -51,12 +52,21 @@ namespace myHell.WebAPI.Controllers
         public void Delete(int id)
         {
         }
+
+
+        [HttpPost]
+        [Route("api/user/saveuser/")]
+        public string SaveUser([FromBody]dynamic data)
+        {
+            return data.Name + data.Email + data.Password + data.Active;
+        }
+
         [Route("api/user/getusers/{id}")]
         public IHttpActionResult GetUsers(int id)
         {
             DataSet dataSet = new DataSet();
-            dataSet = _myHellServices.GetUserByName("dharmik");
-            List<UserModel> model = new List<UserModel>();
+            dataSet = _myHellServices.GetUserById(id);
+            UserModel model = new UserModel();
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
                 UserModel user = new UserModel();
@@ -66,7 +76,7 @@ namespace myHell.WebAPI.Controllers
                 user.Password = row[3].ToString();
                 user.Active = Convert.ToBoolean(row[4].ToString());
 
-                model.Add(user);
+                model = user;
             }
             if (model == null)
             {

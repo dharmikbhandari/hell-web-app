@@ -1,0 +1,39 @@
+﻿<div class="row" ng-controller="usersController" ng-init="init()">
+    <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-danger" ng-click="AddUser()">Add User</button>
+            </div>
+        </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="red">
+                    <h4 class="title">Users</h4>
+                    <p class="category">here is list of hell users</p>
+                </div>
+                <div class="card-content table-responsive">
+                    <table class="table">
+                        <thead class="text-primary">
+                       <th>Edit</th>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Active</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="user in users">
+                                <td><a href="#/editUser/{{user.Id}}">Edit</a></td>
+                                <td>{{user.Id}}</td>
+                                <td>{{user.Name}}</td>
+                                <td>{{user.Email}}</td>
+                                <td>{{user.Password}}</td>
+                                <td>{{user.Active}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

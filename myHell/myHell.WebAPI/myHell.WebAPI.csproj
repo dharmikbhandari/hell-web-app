@@ -142,6 +142,7 @@
     <Content Include="assets\js\material-dashboard.js" />
     <Content Include="assets\js\material.min.js" />
     <Content Include="Web\About.html" />
+    <Content Include="Web\AddEditUser.html" />
     <Content Include="Web\Contact.html" />
     <Content Include="Web\Dashboard.html" />
     <Content Include="Web\Home.html" />
@@ -213,6 +214,7 @@
     <Content Include="Web\md\__MACOSX\material-dashboard-html-v1.1.1\examples\._typography.html" />
     <Content Include="Web\md\__MACOSX\material-dashboard-html-v1.1.1\examples\._upgrade.html" />
     <Content Include="Web\md\__MACOSX\material-dashboard-html-v1.1.1\examples\._user.html" />
+    <Content Include="Web\UserList.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
