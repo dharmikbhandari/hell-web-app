@@ -40,6 +40,25 @@ namespace myHell.Data
             return dataSet;
         }
 
+        /// <summary>
+        /// Is valid login
+        /// </summary>
+        /// <param name="email">email</param>
+        /// <param name="password">password</param>
+        /// <returns>true/false</returns>
+        public bool IsValidLogin(string email,string password)
+        {
+            //if(email.Equals("dharmik_bhandari@hotmail.com") && password.Equals("As@12345"))
+            if (email=="dharmik_bhandari@hotmail.com" && password=="12345")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         #endregion
     }
 }

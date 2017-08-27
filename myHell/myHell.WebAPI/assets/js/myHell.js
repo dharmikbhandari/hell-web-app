@@ -1,4 +1,6 @@
-﻿var myHell = angular.module('myHell', ['ngRoute','firebase']);
+﻿var myHell = angular.module('myHell', ['ngRoute']);
+
+var apiBaseURL = "http://localhost:56420/api/";
 
 // configure our routes
 myHell.config(function ($routeProvider) {
@@ -8,6 +10,12 @@ myHell.config(function ($routeProvider) {
         .when('/', {
             templateUrl: 'home.html',
             controller: 'mainController'
+        })
+
+        // route for the home page
+        .when('/dashboard', {
+            templateUrl: 'dashboard.html',
+            controller: 'dashboardController'
         })
 
         // route for the about page
@@ -31,6 +39,8 @@ myHell.config(function ($routeProvider) {
         .otherwise({ redirectTo: '/login' });
 });
 
+
+
 function ShowNotification(message,type) {
 
     //type : danger,warning,success
@@ -48,17 +58,20 @@ function ShowNotification(message,type) {
         });
 }
 
-myHell.factory("Auth", ["$firebaseAuth",
-    function ($firebaseAuth) {
-        return $firebaseAuth();
-    }
-]);
 
 // create the controller and inject Angular's $scope
 myHell.controller('mainController', function ($scope) {
     // create a message to display in our view
     $scope.message = 'Everyone come and see how good I look!';
     
+});
+
+myHell.controller('dashboardController', function ($scope) {
+    // create a message to display in our view
+    $scope.TestWrite = function () {
+        
+    };
+
 });
 
 myHell.controller('aboutController', function ($scope) {
@@ -69,18 +82,31 @@ myHell.controller('contactController', function ($scope) {
     $scope.message = 'Contact us! JK. This is just a demo.';
 });
 
-myHell.controller('loginController', function ($scope, $firebaseAuth, $window) {
-    var authObj = $firebaseAuth();
+myHell.controller('loginController', function ($scope, $window, $http) {
+
     
     $scope.GetIntoHell = function (user) {
-        
-        if (user!=null) {
-            authObj.$signInWithEmailAndPassword(user.Email, user.Password).then(function (firebaseUser) {
-                $scope.message = "Authentication Success";
+
+        if (user != null) {
+
+            $http({
+                method: 'POST',
+                url: apiBaseURL + 'account/login/',
+                data: JSON.stringify(user)
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
                 $window.location.href = '/web/index.html';
-            }).catch(function (error) {
-                ShowNotification(error, 'danger');
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+
+                var message = response.status + " : " + response.statusText;
+                ShowNotification(message, 'danger');
             });
+        }
+        else {
+            ShowNotification("Please enter Email/Password", 'danger');
         }
     };
 
