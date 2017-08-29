@@ -17,7 +17,11 @@ namespace myHell.Data
         /// <returns>string</returns>
         private string GetConnection()
         {
-            return string.Empty;
+            return  "Server=" + "WNRL0951" + ";" +
+                            "DataBase=" + "Test" + ";" +
+                            "User ID=" + "app" + ";" +
+                            "Password=" + "app@1234" + ";" +
+                            "Connection Timeout=30;Pooling=true;";
         }
 
         /// <summary>

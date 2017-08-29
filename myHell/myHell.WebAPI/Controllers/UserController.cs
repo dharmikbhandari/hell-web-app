@@ -56,9 +56,17 @@ namespace myHell.WebAPI.Controllers
 
         [HttpPost]
         [Route("api/user/saveuser/")]
-        public string SaveUser([FromBody]dynamic data)
+        public JsonResult SaveUser([FromBody]dynamic data)
         {
-            return data.Name + data.Email + data.Password + data.Active;
+            //return data.Name + data.Email + data.Password + data.Active;
+
+            JsonResult jsonResult = new JsonResult();
+            StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
+            storedProcedureOutput = _myHellServices.InsertUser(0, data.Name.ToString(), data.Email.ToString(), data.Password.ToString(), (bool)data.Active);
+
+            jsonResult.Message = storedProcedureOutput.Message;
+            jsonResult.Error = storedProcedureOutput.Error;
+            return jsonResult;
         }
 
         [Route("api/user/getusers/{id}")]

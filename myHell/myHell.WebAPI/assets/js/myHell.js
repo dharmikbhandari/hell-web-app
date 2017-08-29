@@ -229,8 +229,14 @@ myHell.controller('usersController', function ($scope, $window, $http,$routePara
             }).then(function successCallback(response) {
                 // this callback will be called asynchronously
                 // when the response is available
-                console.log(response);
-                ShowNotification("Data Saved...!!!", 'success');
+                
+                if (response.data.Error == '' || response.data.Error == null || response.data.Error == undefined) {
+                    ShowNotification(response.data.Message, 'success');
+                }
+                else {
+                    ShowNotification(response.data.Error, 'danger');
+                }
+                
             }, function errorCallback(response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
