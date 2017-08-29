@@ -1,0 +1,49 @@
+﻿<div class="row" ng-controller="categoryController" ng-init="EditCategory()">
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-danger" ng-click="BackToCategoryList()">Back to Category List</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="red">
+                    <h4 class="title">{{TableTitle}}</h4>
+                    <p class="category">add/edit category information</p>
+                </div>
+                <div class="card-content">
+                    <form>
+                        <div class="row">
+                            <input type="hidden" ng-model="category.Id" />
+                            <div class="col-md-6">
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Category Name</label>
+                                    <input type="text" ng-model="category.Category_Name" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Category Type</label>
+                                    <input type="text" ng-model="category.Category_Type" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="category.Active" name="optionsCheckboxes">
+                                        Active
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary pull-right" ng-click="Save(category)">SAVE</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -48,11 +48,30 @@ myHell.config(function ($routeProvider) {
             controller: 'usersController'
         })
 
-        // route for the adduser page
+        // route for the edituser page
         .when('/editUser/:id', {
             templateUrl: 'AddEditUser.html',
             controller: 'usersController'
         })
+
+        // route for the categoryList page
+        .when('/categoryList', {
+            templateUrl: 'CategoryList.html',
+            controller: 'categoryController'
+        })
+
+        // route for the addCategory page
+        .when('/addCategory', {
+            templateUrl: 'AddEditCategory.html',
+            controller: 'categoryController'
+        })
+
+        // route for the editCategory page
+        .when('/editCategory/:id', {
+            templateUrl: 'AddEditCategory.html',
+            controller: 'categoryController'
+        })
+
         
         .otherwise({ redirectTo: '/login' });
 });
@@ -158,6 +177,7 @@ myHell.controller('usersController', function ($scope, $window, $http,$routePara
 
                 if (response.data.Error == '' || response.data.Error == null || response.data.Error == undefined) {
                     $scope.user = {};
+                    $scope.user.Id = response.data.Object.Table[0].Id;
                     $scope.user.Name = response.data.Object.Table[0].Name;
                     $scope.user.Email = response.data.Object.Table[0].Email;
                     $scope.user.Password = response.data.Object.Table[0].Password;
@@ -238,6 +258,122 @@ myHell.controller('usersController', function ($scope, $window, $http,$routePara
         }
         else {
             ShowNotification("Please enter Email/Password", 'danger');
+        }
+    }
+
+
+});
+
+
+myHell.controller('categoryController', function ($scope, $window, $http, $routeParams) {
+
+
+    $scope.categories = [];
+
+    $scope.message = "This is category page";
+
+    $scope.AddCategory = function () {
+        $window.location.href = '#/addCategory';
+    };
+
+    $scope.BackToCategoryList = function () {
+        $window.location.href = '#/categoryList';
+    };
+
+    $scope.init = function () {
+        GetAllCategories();
+
+    };
+
+    $scope.EditCategory = function () {
+        if ($routeParams.id > 0) {
+            $http({
+                method: 'GET',
+                url: apiBaseURL + 'category/getcategorybyid/' + $routeParams.id,
+            }).then(function successCallback(response) {
+
+                if (response.data.Error == '' || response.data.Error == null || response.data.Error == undefined) {
+                    $scope.category = {};
+                    $scope.category.Id = response.data.Object.Table[0].Id;
+                    $scope.category.Category_Name = response.data.Object.Table[0].Category_Name;
+                    $scope.category.Category_Type = response.data.Object.Table[0].Category_Type;
+                    $scope.category.Active = response.data.Object.Table[0].Active;
+                }
+                else {
+                    ShowNotification(response.data.Error, 'danger');
+                }
+
+                $scope.TableTitle = "Edit Category-" + response.data.Object.Table[0].Category_Name;
+
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                var message = response.status + " : " + response.statusText;
+                ShowNotification(message, 'danger');
+            });
+        }
+        else {
+            $scope.TableTitle = "Add New Category";
+        }
+    };
+
+    $scope.Save = function (category) {
+        Save(category);
+    }
+
+
+
+    function GetAllCategories() {
+        $http({
+            method: 'GET',
+            url: apiBaseURL + 'category/getallcategories/',
+        }).then(function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+            if (response.data.Error == '' || response.data.Error == null || response.data.Error == undefined) {
+                $scope.categories = response.data.Object.Table;
+            }
+            else {
+                ShowNotification(response.data.Error, 'danger');
+            }
+
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+
+            var message = response.status + " : " + response.statusText;
+            ShowNotification(message, 'danger');
+        });
+    };
+
+
+    function Save(category) {
+        if (category != null) {
+
+            $http({
+                method: 'POST',
+                url: apiBaseURL + 'category/savecategory/',
+                data: JSON.stringify(category)
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+
+                if (response.data.Error == '' || response.data.Error == null || response.data.Error == undefined) {
+                    ShowNotification(response.data.Message, 'success');
+                }
+                else {
+                    ShowNotification(response.data.Error, 'danger');
+                }
+
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                var message = response.status + " : " + response.statusText;
+                ShowNotification(message, 'danger');
+            });
+        }
+        else {
+            ShowNotification("Please enter Category_Name/Category_Type", 'danger');
         }
     }
 

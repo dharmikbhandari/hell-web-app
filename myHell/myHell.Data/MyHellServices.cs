@@ -20,6 +20,8 @@ namespace myHell.Data
 
         #region Methods
 
+        #region User
+
         /// <summary>
         /// Get User By Name
         /// </summary>
@@ -79,7 +81,7 @@ namespace myHell.Data
                 Size = 5000
             });
 
-            //Execute Stored Procedure
+            
             storedProcedureOutput.DataSet = _dbEntities.Execute("myHell_GET_USER", sqlParams, out outputParameter);
             if (outputParameter.Keys.Count > 0 && outputParameter.ContainsKey("@Error"))
             {
@@ -140,7 +142,7 @@ namespace myHell.Data
                 Size = 5000
             });
 
-            //Execute Stored Procedure
+           
             storedProcedureOutput.DataSet = _dbEntities.Execute("myHell_GET_USER", sqlParams, out outputParameter);
             if (outputParameter.Keys.Count > 0 && outputParameter.ContainsKey("@Error"))
             {
@@ -260,7 +262,7 @@ namespace myHell.Data
                 Size = 5000
             });
 
-            //Execute Stored Procedure
+            
             storedProcedureOutput.DataSet = _dbEntities.Execute("myHell_SET_USER", sqlParams, out outputParameter);
             if (outputParameter.Keys.Count > 0 && outputParameter.ContainsKey("@Error"))
             {
@@ -285,6 +287,254 @@ namespace myHell.Data
             return storedProcedureOutput;
 
         }
+
+        #endregion
+
+
+        #region Category
+
+        /// <summary>
+        /// Get Category By Name
+        /// </summary>
+        /// <param categoryName="categoryName">name</param>
+        /// <returns>User Dataset</returns>
+        public DataSet GetCategoryByName(string categoryName)
+        {
+            DataSet dataSet = new DataSet();
+
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("Id", typeof(int));
+            dataTable.Columns.Add("Name", typeof(string));
+            dataTable.Columns.Add("Email", typeof(string));
+            dataTable.Columns.Add("Password", typeof(string));
+            dataTable.Columns.Add("Active", typeof(bool));
+
+            dataTable.Rows.Add(1, "Dharmik", "d@d.com", "12345", true);
+
+            dataSet.Tables.Add(dataTable);
+
+            return dataSet;
+        }
+
+        /// <summary>
+        /// Get Category By Id
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>User Dataset</returns>
+        public StoredProcedureOutput GetCategoryById(int id)
+        {
+            StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            Dictionary<string, string> outputParameter = new Dictionary<string, string>();
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Id",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Input,
+                Value = id
+            });
+
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Error",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Message",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+            
+            storedProcedureOutput.DataSet = _dbEntities.Execute("myHell_GET_Category", sqlParams, out outputParameter);
+            if (outputParameter.Keys.Count > 0 && outputParameter.ContainsKey("@Error"))
+            {
+
+                if (outputParameter["@Error"] == _NO_ERROR)
+                {
+                    if (outputParameter.ContainsKey("@Message"))
+                    {
+                        if (outputParameter["@Message"] != _NO_MESSAGE)
+                        {
+                            storedProcedureOutput.Message = outputParameter["@Message"];
+                        }
+                    }
+                }
+                else
+                {
+                    storedProcedureOutput.Error = outputParameter["@Error"];
+                }
+
+            }
+
+            return storedProcedureOutput;
+        }
+
+
+        /// <summary>
+        /// Get All Categories
+        /// </summary>
+        /// <returns>Category Dataset</returns>
+        public StoredProcedureOutput GetAllCategories(int pageSize, int pageIndex)
+        {
+            StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            Dictionary<string, string> outputParameter = new Dictionary<string, string>();
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Id",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Input,
+                Value = 0
+            });
+
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Error",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Message",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+            
+            storedProcedureOutput.DataSet = _dbEntities.Execute("myHell_GET_Category", sqlParams, out outputParameter);
+            if (outputParameter.Keys.Count > 0 && outputParameter.ContainsKey("@Error"))
+            {
+
+                if (outputParameter["@Error"] == _NO_ERROR)
+                {
+                    if (outputParameter.ContainsKey("@Message"))
+                    {
+                        if (outputParameter["@Message"] != _NO_MESSAGE)
+                        {
+                            storedProcedureOutput.Message = outputParameter["@Message"];
+                        }
+                    }
+                }
+                else
+                {
+                    storedProcedureOutput.Error = outputParameter["@Error"];
+                }
+
+            }
+
+            return storedProcedureOutput;
+        }
+
+
+        
+
+        /// <summary>
+        /// Insert Category
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <param name="categoryName">categoryName</param>
+        /// <param name="cateogryType">categoryType</param>
+        /// <param name="active">active</param>
+        /// <returns>storedProcedureOutput</returns>
+        public StoredProcedureOutput InsertCategory(int id, string categoryName, string categoryType,  bool active)
+        {
+            StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            Dictionary<string, string> outputParameter = new Dictionary<string, string>();
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Id",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Input,
+                Value = id
+            });
+
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Category_Name",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Input,
+                Value = categoryName
+            });
+
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Category_Type",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Input,
+                Value = categoryType
+            });
+
+            
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Active",
+                SqlDbType = SqlDbType.Bit,
+                Direction = ParameterDirection.Input,
+                Value = active
+            });
+
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Error",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Message",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+            
+            storedProcedureOutput.DataSet = _dbEntities.Execute("myHell_SET_Category", sqlParams, out outputParameter);
+            if (outputParameter.Keys.Count > 0 && outputParameter.ContainsKey("@Error"))
+            {
+
+                if (outputParameter["@Error"] == _NO_ERROR)
+                {
+                    if (outputParameter.ContainsKey("@Message"))
+                    {
+                        if (outputParameter["@Message"] != _NO_MESSAGE)
+                        {
+                            storedProcedureOutput.Message = outputParameter["@Message"];
+                        }
+                    }
+                }
+                else
+                {
+                    storedProcedureOutput.Error = outputParameter["@Error"];
+                }
+
+            }
+
+            return storedProcedureOutput;
+
+        }
+
+        #endregion
+
 
 
         #endregion

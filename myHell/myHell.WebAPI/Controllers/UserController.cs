@@ -60,7 +60,7 @@ namespace myHell.WebAPI.Controllers
         {
             JsonResult jsonResult = new JsonResult();
             StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
-            storedProcedureOutput = _myHellServices.InsertUser(0, data.Name.ToString(), data.Email.ToString(), data.Password.ToString(), (bool)data.Active);
+            storedProcedureOutput = _myHellServices.InsertUser(data.Id==null?0:(int)data.Id, data.Name.ToString(), data.Email.ToString(), data.Password.ToString(), (bool)data.Active);
 
             jsonResult.Message = storedProcedureOutput.Message;
             jsonResult.Error = storedProcedureOutput.Error;
