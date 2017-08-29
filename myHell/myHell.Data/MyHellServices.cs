@@ -14,7 +14,8 @@ namespace myHell.Data
 
         DbEntities _dbEntities = new DbEntities();
         private const string _NO_ERROR = "NoError";
-        
+        private const string _NO_MESSAGE = "NoMessage";
+
         #endregion
 
         #region Methods
@@ -47,22 +48,60 @@ namespace myHell.Data
         /// </summary>
         /// <param name="id">Id</param>
         /// <returns>User Dataset</returns>
-        public DataSet GetUserById(int id)
+        public StoredProcedureOutput GetUserById(int id)
         {
-            DataSet dataSet = new DataSet();
+            StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            Dictionary<string, string> outputParameter = new Dictionary<string, string>();
 
-            DataTable dataTable = new DataTable();
-            dataTable.Columns.Add("Id", typeof(int));
-            dataTable.Columns.Add("Name", typeof(string));
-            dataTable.Columns.Add("Email", typeof(string));
-            dataTable.Columns.Add("Password", typeof(string));
-            dataTable.Columns.Add("Active", typeof(bool));
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Id",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Input,
+                Value = id
+            });
 
-            dataTable.Rows.Add(1, "Dharmik", "d@d.com", "12345", true);
 
-            dataSet.Tables.Add(dataTable);
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Error",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
 
-            return dataSet;
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Message",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+            //Execute Stored Procedure
+            storedProcedureOutput.DataSet = _dbEntities.Execute("myHell_GET_USER", sqlParams, out outputParameter);
+            if (outputParameter.Keys.Count > 0 && outputParameter.ContainsKey("@Error"))
+            {
+
+                if (outputParameter["@Error"] == _NO_ERROR)
+                {
+                    if (outputParameter.ContainsKey("@Message"))
+                    {
+                        if (outputParameter["@Message"] != _NO_MESSAGE)
+                        {
+                            storedProcedureOutput.Message = outputParameter["@Message"];
+                        }
+                    }
+                }
+                else
+                {
+                    storedProcedureOutput.Error = outputParameter["@Error"];
+                }
+
+            }
+
+            return storedProcedureOutput;
         }
 
 
@@ -70,33 +109,60 @@ namespace myHell.Data
         /// Get All Users
         /// </summary>
         /// <returns>User Dataset</returns>
-        public DataSet GetAllUser(int pageSize,int pageIndex)
+        public StoredProcedureOutput GetAllUser(int pageSize,int pageIndex)
         {
-           
+            StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            Dictionary<string, string> outputParameter = new Dictionary<string, string>();
 
-            DataSet dataSet = new DataSet();
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Id",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Input,
+                Value = 0
+            });
 
-            DataTable dataTable = new DataTable();
-            dataTable.Columns.Add("Id", typeof(int));
-            dataTable.Columns.Add("Name", typeof(string));
-            dataTable.Columns.Add("Email", typeof(string));
-            dataTable.Columns.Add("Password", typeof(string));
-            dataTable.Columns.Add("Active", typeof(bool));
 
-            dataTable.Rows.Add(1, "Dharmik1", "d@d.com", "12345", true);
-            dataTable.Rows.Add(2, "Dharmik2", "d@d.com", "12345", true);
-            dataTable.Rows.Add(3, "Dharmik3", "d@d.com", "12345", true);
-            dataTable.Rows.Add(4, "Dharmik4", "d@d.com", "12345", true);
-            dataTable.Rows.Add(5, "Dharmik5", "d@d.com", "12345", true);
-            dataTable.Rows.Add(6, "Dharmik6", "d@d.com", "12345", true);
-            dataTable.Rows.Add(7, "Dharmik7", "d@d.com", "12345", false);
-            dataTable.Rows.Add(8, "Dharmik8", "d@d.com", "12345", true);
-            dataTable.Rows.Add(9, "Dharmik9", "d@d.com", "12345", true);
-            dataTable.Rows.Add(10, "Dharmik10", "d@d.com", "12345", true);
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Error",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
 
-            dataSet.Tables.Add(dataTable);
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Message",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
 
-            return dataSet;
+            //Execute Stored Procedure
+            storedProcedureOutput.DataSet = _dbEntities.Execute("myHell_GET_USER", sqlParams, out outputParameter);
+            if (outputParameter.Keys.Count > 0 && outputParameter.ContainsKey("@Error"))
+            {
+
+                if (outputParameter["@Error"] == _NO_ERROR)
+                {
+                    if (outputParameter.ContainsKey("@Message"))
+                    {
+                        if (outputParameter["@Message"] != _NO_MESSAGE)
+                        {
+                            storedProcedureOutput.Message = outputParameter["@Message"];
+                        }
+                    }
+                }
+                else
+                {
+                    storedProcedureOutput.Error = outputParameter["@Error"];
+                }
+
+            }
+
+            return storedProcedureOutput;
         }
 
 
@@ -203,7 +269,10 @@ namespace myHell.Data
                 {
                     if (outputParameter.ContainsKey("@Message"))
                     {
-                        storedProcedureOutput.Message = outputParameter["@Message"];
+                        if (outputParameter["@Message"] != _NO_MESSAGE)
+                        {
+                            storedProcedureOutput.Message = outputParameter["@Message"];
+                        }
                     }
                 }
                 else

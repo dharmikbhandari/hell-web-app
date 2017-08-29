@@ -58,7 +58,6 @@ myHell.config(function ($routeProvider) {
 });
 
 
-
 function ShowNotification(message,type) {
 
     //type : danger,warning,success
@@ -146,7 +145,6 @@ myHell.controller('usersController', function ($scope, $window, $http,$routePara
     };
 
     $scope.init = function () {
-        console.log("init called...");
         GetAllUsers();
         
     };
@@ -155,23 +153,26 @@ myHell.controller('usersController', function ($scope, $window, $http,$routePara
         if ($routeParams.id > 0) {
             $http({
                 method: 'GET',
-                url: apiBaseURL + 'user/getusers/' + $routeParams.id,
+                url: apiBaseURL + 'user/getuserbyid/' + $routeParams.id,
             }).then(function successCallback(response) {
 
-                var user = response.data;
-                $scope.user = {};
-                $scope.user.Name = user.Name;
-                $scope.user.Email = user.Email;
-                $scope.user.Password = user.Password;
-                $scope.user.Active = user.Active;
+                if (response.data.Error == '' || response.data.Error == null || response.data.Error == undefined) {
+                    $scope.user = {};
+                    $scope.user.Name = response.data.Object.Table[0].Name;
+                    $scope.user.Email = response.data.Object.Table[0].Email;
+                    $scope.user.Password = response.data.Object.Table[0].Password;
+                    $scope.user.Active = response.data.Object.Table[0].Active;
+                }
+                else {
+                    ShowNotification(response.data.Error, 'danger');
+                }
 
-                $scope.TableTitle = "Edit User-"+user.Name;
+                $scope.TableTitle = "Edit User-" + response.data.Object.Table[0].Name;
 
             }, function errorCallback(response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
-
-                var message = response.status + " : " + response.statusText;
+               var message = response.status + " : " + response.statusText;
                 ShowNotification(message, 'danger');
             });
         }
@@ -184,24 +185,21 @@ myHell.controller('usersController', function ($scope, $window, $http,$routePara
         Save(user)
     }
 
-    $scope.Edit = function (id) {
-        
-        
-        $window.location.href = '#/addUser';
-        var user = GetUserById(id);
-        $scope.user.Name = "ddd";
-        console.log(user);
-    }
+
 
     function GetAllUsers() {
         $http({
             method: 'GET',
-            url: apiBaseURL + 'User',
+            url: apiBaseURL + 'user/getallusers/',
         }).then(function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
-            $scope.users = response.data;
-            
+            if (response.data.Error == '' || response.data.Error == null || response.data.Error == undefined) {
+                $scope.users = response.data.Object.Table;
+            }
+            else {
+                ShowNotification(response.data.Error, 'danger');
+            }
 
         }, function errorCallback(response) {
             // called asynchronously if an error occurs
@@ -212,13 +210,7 @@ myHell.controller('usersController', function ($scope, $window, $http,$routePara
         });
     };
 
-    function GetUserById(id) {
-       
-      
-
-      
-    }
-
+    
     function Save(user) {
         if (user != null) {
 

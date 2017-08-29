@@ -12,24 +12,24 @@ namespace myHell.WebAPI.Controllers
         MyHellServices _myHellServices = new MyHellServices();
 
         // GET: api/User
-        public IEnumerable<UserModel> Get()
-        {
-            DataSet dataSet = new DataSet();
-            dataSet = _myHellServices.GetAllUser(0,0);
-            List<UserModel> model = new List<UserModel>();
-            foreach(DataRow row in dataSet.Tables[0].Rows)
-            {
-                UserModel user = new UserModel();
-                user.Id = Convert.ToInt32(row[0].ToString());
-                user.Name = row[1].ToString();
-                user.Email = row[2].ToString();
-                user.Password = row[3].ToString();
-                user.Active =Convert.ToBoolean(row[4].ToString());
+        //public IEnumerable<UserModel> Get()
+        //{
+        //    DataSet dataSet = new DataSet();
+        //    dataSet = _myHellServices.GetAllUser(0,0);
+        //    List<UserModel> model = new List<UserModel>();
+        //    foreach(DataRow row in dataSet.Tables[0].Rows)
+        //    {
+        //        UserModel user = new UserModel();
+        //        user.Id = Convert.ToInt32(row[0].ToString());
+        //        user.Name = row[1].ToString();
+        //        user.Email = row[2].ToString();
+        //        user.Password = row[3].ToString();
+        //        user.Active =Convert.ToBoolean(row[4].ToString());
 
-                model.Add(user);
-            }
-            return model;
-        }
+        //        model.Add(user);
+        //    }
+        //    return model;
+        //}
 
         // GET: api/User/5
         public string Get(int id)
@@ -58,8 +58,6 @@ namespace myHell.WebAPI.Controllers
         [Route("api/user/saveuser/")]
         public JsonResult SaveUser([FromBody]dynamic data)
         {
-            //return data.Name + data.Email + data.Password + data.Active;
-
             JsonResult jsonResult = new JsonResult();
             StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
             storedProcedureOutput = _myHellServices.InsertUser(0, data.Name.ToString(), data.Email.ToString(), data.Password.ToString(), (bool)data.Active);
@@ -69,29 +67,28 @@ namespace myHell.WebAPI.Controllers
             return jsonResult;
         }
 
-        [Route("api/user/getusers/{id}")]
-        public IHttpActionResult GetUsers(int id)
+        [Route("api/user/getuserbyid/{id}")]
+        public JsonResult GetUserById(int id)
         {
-            DataSet dataSet = new DataSet();
-            dataSet = _myHellServices.GetUserById(id);
-            UserModel model = new UserModel();
-            foreach (DataRow row in dataSet.Tables[0].Rows)
-            {
-                UserModel user = new UserModel();
-                user.Id = Convert.ToInt32(row[0].ToString());
-                user.Name = row[1].ToString();
-                user.Email = row[2].ToString();
-                user.Password = row[3].ToString();
-                user.Active = Convert.ToBoolean(row[4].ToString());
+            JsonResult jsonResult = new JsonResult();
+            StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
+            storedProcedureOutput = _myHellServices.GetUserById(id);
+            jsonResult.Object = storedProcedureOutput.DataSet;
+            jsonResult.Message = storedProcedureOutput.Message;
+            jsonResult.Error = storedProcedureOutput.Error;
+            return jsonResult;
+        }
 
-                model = user;
-            }
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(model);
+        [Route("api/user/getallusers/")]
+        public JsonResult GetAllUsers()
+        {
+            JsonResult jsonResult = new JsonResult();
+            StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
+            storedProcedureOutput = _myHellServices.GetAllUser(0,0);
+            jsonResult.Object = storedProcedureOutput.DataSet;
+            jsonResult.Message = storedProcedureOutput.Message;
+            jsonResult.Error = storedProcedureOutput.Error;
+            return jsonResult;
         }
     }
     //[HttpPost]
