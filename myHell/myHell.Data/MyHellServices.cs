@@ -290,7 +290,6 @@ namespace myHell.Data
 
         #endregion
 
-
         #region Category
 
         /// <summary>
@@ -532,6 +531,234 @@ namespace myHell.Data
             return storedProcedureOutput;
 
         }
+
+        #endregion
+
+        #region Transanction
+
+        /// <summary>
+        /// Get Transaction By Id
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>User Dataset</returns>
+        public StoredProcedureOutput GetTransactionById(int id)
+        {
+            StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            Dictionary<string, string> outputParameter = new Dictionary<string, string>();
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Id",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Input,
+                Value = id
+            });
+
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Error",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Message",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+
+            storedProcedureOutput.DataSet = _dbEntities.Execute("myHell_GET_Transaction", sqlParams, out outputParameter);
+            if (outputParameter.Keys.Count > 0 && outputParameter.ContainsKey("@Error"))
+            {
+
+                if (outputParameter["@Error"] == _NO_ERROR)
+                {
+                    if (outputParameter.ContainsKey("@Message"))
+                    {
+                        if (outputParameter["@Message"] != _NO_MESSAGE)
+                        {
+                            storedProcedureOutput.Message = outputParameter["@Message"];
+                        }
+                    }
+                }
+                else
+                {
+                    storedProcedureOutput.Error = outputParameter["@Error"];
+                }
+
+            }
+
+            return storedProcedureOutput;
+        }
+
+
+        /// <summary>
+        /// Get All Transactions
+        /// </summary>
+        /// <returns>User Dataset</returns>
+        public StoredProcedureOutput GetAllTransactions(int pageSize, int pageIndex)
+        {
+            StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            Dictionary<string, string> outputParameter = new Dictionary<string, string>();
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Id",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Input,
+                Value = 0
+            });
+
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Error",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Message",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+
+            storedProcedureOutput.DataSet = _dbEntities.Execute("myHell_GET_Transaction", sqlParams, out outputParameter);
+            if (outputParameter.Keys.Count > 0 && outputParameter.ContainsKey("@Error"))
+            {
+
+                if (outputParameter["@Error"] == _NO_ERROR)
+                {
+                    if (outputParameter.ContainsKey("@Message"))
+                    {
+                        if (outputParameter["@Message"] != _NO_MESSAGE)
+                        {
+                            storedProcedureOutput.Message = outputParameter["@Message"];
+                        }
+                    }
+                }
+                else
+                {
+                    storedProcedureOutput.Error = outputParameter["@Error"];
+                }
+
+            }
+
+            return storedProcedureOutput;
+        }
+
+        
+        /// <summary>
+        /// Insert Transaction
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <param name="amount">amount</param>
+        /// <param name="categoryId">categoryId</param>
+        /// <param name="userId">userId</param>
+        /// <param name="active">active</param>
+        /// <returns>storedProcedureOutput</returns>
+        public StoredProcedureOutput InsertTransaction(int id, decimal amount,int categoryId,int userId, bool active)
+        {
+            StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            Dictionary<string, string> outputParameter = new Dictionary<string, string>();
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Id",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Input,
+                Value = id
+            });
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Amount",
+                SqlDbType = SqlDbType.Decimal,
+                Direction = ParameterDirection.Input,
+                Value = amount
+            });
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@CategoryId",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Input,
+                Value = categoryId
+            });
+
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@UserId",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Input,
+                Value = userId
+            });
+
+         
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Active",
+                SqlDbType = SqlDbType.Bit,
+                Direction = ParameterDirection.Input,
+                Value = active
+            });
+
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Error",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+            sqlParams.Add(new SqlParameter()
+            {
+                ParameterName = "@Message",
+                SqlDbType = SqlDbType.VarChar,
+                Direction = ParameterDirection.Output,
+                Size = 5000
+            });
+
+
+            storedProcedureOutput.DataSet = _dbEntities.Execute("myHell_SET_Transaction", sqlParams, out outputParameter);
+            if (outputParameter.Keys.Count > 0 && outputParameter.ContainsKey("@Error"))
+            {
+
+                if (outputParameter["@Error"] == _NO_ERROR)
+                {
+                    if (outputParameter.ContainsKey("@Message"))
+                    {
+                        if (outputParameter["@Message"] != _NO_MESSAGE)
+                        {
+                            storedProcedureOutput.Message = outputParameter["@Message"];
+                        }
+                    }
+                }
+                else
+                {
+                    storedProcedureOutput.Error = outputParameter["@Error"];
+                }
+
+            }
+
+            return storedProcedureOutput;
+
+        }
+
 
         #endregion
 

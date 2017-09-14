@@ -1,0 +1,43 @@
+﻿<div class="row" ng-controller="transactionController" ng-init="init()">
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-danger" ng-click="AddTransaction()">Add Transaction</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="red">
+                    <h4 class="title">Transactions</h4>
+                    <p class="category">here is list of hell transactions</p>
+                </div>
+                <div class="card-content table-responsive">
+                    <table class="table">
+                        <thead class="text-primary">
+                        <th>Edit</th>
+                        <th>Id</th>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>User</th>
+                        <th>Active</th>
+                        <th>CreatedDate</th>
+                        <th>UpdatedDate</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="transaction in transactions">
+                                <td><a href="#/editTransaction/{{transaction.Id}}">Edit</a></td>
+                                <td>{{transaction.Id}}</td>
+                                <td>{{transaction.Amount}}</td>
+                                <td>{{transaction.CategoryId}}</td>
+                                <td>{{transaction.UserId}}</td>
+                                <td>{{transaction.Active}}</td>
+                                <td>{{transaction.CreatedDate}}</td>
+                                <td>{{transaction.UpdatedDate}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

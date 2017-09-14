@@ -1,8 +1,4 @@
 ﻿using myHell.Data;
-using myHell.WebAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Web.Http;
 
 namespace myHell.WebAPI.Controllers

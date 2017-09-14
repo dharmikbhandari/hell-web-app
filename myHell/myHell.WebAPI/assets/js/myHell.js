@@ -36,6 +36,9 @@ myHell.config(function ($routeProvider) {
         controller: 'loginController'
         })
 
+
+
+
         // route for the userList page
         .when('/userList', {
             templateUrl: 'UserList.html',
@@ -54,6 +57,10 @@ myHell.config(function ($routeProvider) {
             controller: 'usersController'
         })
 
+
+
+
+
         // route for the categoryList page
         .when('/categoryList', {
             templateUrl: 'CategoryList.html',
@@ -71,6 +78,28 @@ myHell.config(function ($routeProvider) {
             templateUrl: 'AddEditCategory.html',
             controller: 'categoryController'
         })
+
+
+
+
+        // route for the transactionList page
+        .when('/transactionList', {
+            templateUrl: 'transactionList.html',
+            controller: 'transactionController'
+        })
+
+        // route for the addTransaction page
+        .when('/addTransaction', {
+            templateUrl: 'AddEditTransaction.html',
+            controller: 'transactionController'
+        })
+
+        // route for the editTransaction page
+        .when('/editTransaction/:id', {
+            templateUrl: 'AddEditTransaction.html',
+            controller: 'transactionController'
+        })
+
 
         
         .otherwise({ redirectTo: '/login' });
@@ -147,6 +176,7 @@ myHell.controller('loginController', function ($scope, $window, $http) {
     };
 
 });
+
 
 myHell.controller('usersController', function ($scope, $window, $http,$routeParams) {
 
@@ -379,3 +409,120 @@ myHell.controller('categoryController', function ($scope, $window, $http, $route
 
 
 });
+
+myHell.controller('transactionController', function ($scope, $window, $http, $routeParams) {
+
+
+    $scope.transactions = [];
+
+    $scope.message = "This is transactions page";
+
+    $scope.AddTransaction = function () {
+        $window.location.href = '#/addTransaction';
+    };
+
+    $scope.BackToTransactionList = function () {
+        $window.location.href = '#/transactionList';
+    };
+
+    $scope.init = function () {
+        GetAllTransactions();
+
+    };
+
+    $scope.EditTransaction = function () {
+        if ($routeParams.id > 0) {
+            $http({
+                method: 'GET',
+                url: apiBaseURL + 'transaction/gettransactionbyid/' + $routeParams.id,
+            }).then(function successCallback(response) {
+
+                if (response.data.Error == '' || response.data.Error == null || response.data.Error == undefined) {
+                    $scope.transaction = {};
+                    $scope.transaction.Id = response.data.Object.Table[0].Id;
+                    $scope.transaction.Amount = response.data.Object.Table[0].Amount;
+                    $scope.transaction.CategoryId = response.data.Object.Table[0].CategoryId;
+                    $scope.transaction.UserId = response.data.Object.Table[0].UserId;
+                    $scope.transaction.Active = response.data.Object.Table[0].Active;
+                }
+                else {
+                    ShowNotification(response.data.Error, 'danger');
+                }
+
+                $scope.TableTitle = "Edit Transaction-" + response.data.Object.Table[0].Id;
+
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                var message = response.status + " : " + response.statusText;
+                ShowNotification(message, 'danger');
+            });
+        }
+        else {
+            $scope.TableTitle = "Add New Transaction";
+        }
+    };
+
+    $scope.Save = function (transaction) {
+        Save(transaction)
+    }
+
+
+
+    function GetAllTransactions() {
+        $http({
+            method: 'GET',
+            url: apiBaseURL + 'transaction/getalltransactions/',
+        }).then(function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+            if (response.data.Error == '' || response.data.Error == null || response.data.Error == undefined) {
+                $scope.transactions = response.data.Object.Table;
+            }
+            else {
+                ShowNotification(response.data.Error, 'danger');
+            }
+
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+
+            var message = response.status + " : " + response.statusText;
+            ShowNotification(message, 'danger');
+        });
+    };
+
+
+    function Save(transaction) {
+        if (transaction != null) {
+
+            $http({
+                method: 'POST',
+                url: apiBaseURL + 'transaction/savetransaction/',
+                data: JSON.stringify(transaction)
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+
+                if (response.data.Error == '' || response.data.Error == null || response.data.Error == undefined) {
+                    ShowNotification(response.data.Message, 'success');
+                }
+                else {
+                    ShowNotification(response.data.Error, 'danger');
+                }
+
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                var message = response.status + " : " + response.statusText;
+                ShowNotification(message, 'danger');
+            });
+        }
+        else {
+            ShowNotification("Please enter Amount/Category", 'danger');
+        }
+    }
+
+
+});
+

@@ -3,46 +3,48 @@ using System.Web.Http;
 
 namespace myHell.WebAPI.Controllers
 {
-    public class CategoryController : ApiController
+    public class TransactionController : ApiController
     {
         MyHellServices _myHellServices = new MyHellServices();
 
+
         [HttpPost]
-        [Route("api/category/savecategory/")]
-        public JsonResult SaveCategory([FromBody]dynamic data)
+        [Route("api/transaction/savetransaction/")]
+        public JsonResult SaveTransaction([FromBody]dynamic data)
         {
             JsonResult jsonResult = new JsonResult();
             StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
-            storedProcedureOutput = _myHellServices.InsertCategory(data.Id == null ? 0 : (int)data.Id, data.Category_Name.ToString(), data.Category_Type.ToString(), (bool)data.Active);
+            storedProcedureOutput = _myHellServices.InsertTransaction(data.Id == null ? 0 : (int)data.Id,(decimal)data.Amount,(int)data.CategoryId,(int)data.UserId, (bool)data.Active);
 
             jsonResult.Message = storedProcedureOutput.Message;
             jsonResult.Error = storedProcedureOutput.Error;
             return jsonResult;
         }
 
-        [Route("api/category/getcategorybyid/{id}")]
-        public JsonResult GetCategoryById(int id)
+        [Route("api/transaction/gettransactionbyid/{id}")]
+        public JsonResult GetTransactionById(int id)
         {
             JsonResult jsonResult = new JsonResult();
             StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
-            storedProcedureOutput = _myHellServices.GetCategoryById(id);
+            storedProcedureOutput = _myHellServices.GetTransactionById(id);
             jsonResult.Object = storedProcedureOutput.DataSet;
             jsonResult.Message = storedProcedureOutput.Message;
             jsonResult.Error = storedProcedureOutput.Error;
             return jsonResult;
         }
 
-        [Route("api/category/getallcategories/")]
-        public JsonResult GetAllCategories()
+        [Route("api/transaction/getalltransactions/")]
+        public JsonResult GetAllTransactions()
         {
             JsonResult jsonResult = new JsonResult();
             StoredProcedureOutput storedProcedureOutput = new StoredProcedureOutput();
-            storedProcedureOutput = _myHellServices.GetAllCategories(0, 0);
+            storedProcedureOutput = _myHellServices.GetAllTransactions(0, 0);
             jsonResult.Object = storedProcedureOutput.DataSet;
             jsonResult.Message = storedProcedureOutput.Message;
             jsonResult.Error = storedProcedureOutput.Error;
             return jsonResult;
         }
     }
+
 }
 
