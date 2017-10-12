@@ -411,10 +411,9 @@ myHell.controller('categoryController', function ($scope, $window, $http, $route
 });
 
 myHell.controller('transactionController', function ($scope, $window, $http, $routeParams) {
-
-
-    $scope.transactions = [];
-
+    $scope.transactions = {};
+    $scope.transaction = {};
+    $scope.Categories = {};
     $scope.message = "This is transactions page";
 
     $scope.AddTransaction = function () {
@@ -427,10 +426,11 @@ myHell.controller('transactionController', function ($scope, $window, $http, $ro
 
     $scope.init = function () {
         GetAllTransactions();
-
+        
     };
 
     $scope.EditTransaction = function () {
+        GetAllCategories();
         if ($routeParams.id > 0) {
             $http({
                 method: 'GET',
@@ -438,12 +438,19 @@ myHell.controller('transactionController', function ($scope, $window, $http, $ro
             }).then(function successCallback(response) {
 
                 if (response.data.Error == '' || response.data.Error == null || response.data.Error == undefined) {
-                    $scope.transaction = {};
+                   
                     $scope.transaction.Id = response.data.Object.Table[0].Id;
                     $scope.transaction.Amount = response.data.Object.Table[0].Amount;
                     $scope.transaction.CategoryId = response.data.Object.Table[0].CategoryId;
                     $scope.transaction.UserId = response.data.Object.Table[0].UserId;
                     $scope.transaction.Active = response.data.Object.Table[0].Active;
+                    //$scope.transaction.Category = $scope.Categories[0];
+
+                    angular.forEach($scope.Categories, function (category, index) {
+                        if (category.Id == response.data.Object.Table[0].CategoryId) {
+                            $scope.transaction.Category = category;
+                        }
+                    });
                 }
                 else {
                     ShowNotification(response.data.Error, 'danger');
@@ -467,7 +474,9 @@ myHell.controller('transactionController', function ($scope, $window, $http, $ro
         Save(transaction)
     }
 
-
+    $scope.SetCategoryId = function (category) {
+        $scope.transaction.CategoryId = category.Id;
+    }
 
     function GetAllTransactions() {
         $http({
@@ -492,8 +501,32 @@ myHell.controller('transactionController', function ($scope, $window, $http, $ro
         });
     };
 
+    function GetAllCategories() {
+        $http({
+            method: 'GET',
+            url: apiBaseURL + 'category/getallcategories/',
+        }).then(function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+            if (response.data.Error == '' || response.data.Error == null || response.data.Error == undefined) {
+                $scope.Categories = response.data.Object.Table;
+                
+            }
+            else {
+                ShowNotification(response.data.Error, 'danger');
+            }
+
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+
+            var message = response.status + " : " + response.statusText;
+            ShowNotification(message, 'danger');
+        });
+    };
 
     function Save(transaction) {
+        console.log(transaction);
         if (transaction != null) {
 
             $http({

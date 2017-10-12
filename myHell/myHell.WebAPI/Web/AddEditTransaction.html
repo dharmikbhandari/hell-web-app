@@ -24,7 +24,8 @@
                             <div class="col-md-6">
                                 <div class="form-group label-floating">
                                     <label class="control-label">Category</label>
-                                    <input type="number" ng-model="transaction.CategoryId" class="form-control" required>
+                                    <select ng-model="transaction.Category" ng-change="SetCategoryId(transaction.Category)"  ng-options="category.Category_Name for category in Categories track by category.Id" >
+                                    </select>
                                 </div>
                             </div>
                         </div>
